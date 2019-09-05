@@ -52,6 +52,20 @@ func newValue(in reflect.Value) (out reflect.Value, isArrayElement bool) {
 
 }
 
+func initEmptyPointerValue(v reflect.Value) {
+	vparent := v
+	for (v.Kind() == reflect.Ptr) {
+		vparent = v
+		v = v.Elem()
+	}
+	if (vparent != v) && !v.IsValid() {
+		vnew := reflect.New(vparent.Type().Elem())
+		if vparent.CanSet() {
+			vparent.Set(vnew)
+		}
+	}
+}
+
 func dereferencePointerValue(v reflect.Value) reflect.Value {
 	for (v.Kind() == reflect.Interface || v.Kind() == reflect.Ptr) && v.Elem().IsValid() {
 		v = v.Elem()

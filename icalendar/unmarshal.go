@@ -162,6 +162,8 @@ func hydrateLiteral(v reflect.Value, prop *properties.Property) (reflect.Value, 
 
 func hydrateProperty(v reflect.Value, prop *properties.Property) error {
 
+	initEmptyPointerValue(v)
+	
 	// check to see if the interface handles it's own hydration
 	if handled, err := hydrateInterface(v, prop); err != nil {
 		return utils.NewError(hydrateProperty, "unable to hydrate interface", v, err)
