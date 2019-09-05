@@ -267,7 +267,7 @@ func hydrateProperties(v reflect.Value, component *token) error {
 		vfield := vdref.Field(i)
 
 		// first try to hydrate property values
-		if properties, ok := component.properties[prop.Name]; ok {
+		if properties, ok := component.properties[properties.DesanitizeName(prop.Name)]; ok {
 			for _, prop := range properties {
 				if err := hydrateProperty(vfield, prop); err != nil {
 					msg := fmt.Sprintf("unable to hydrate property %s", prop.Name)

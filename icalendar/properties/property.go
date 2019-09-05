@@ -172,6 +172,10 @@ func UnmarshalProperty(line string) *Property {
 	return prop
 }
 
+func DesanitizeName(name PropertyName) PropertyName {
+	return PropertyName(propNameDesanitizer.Replace(string(name)))
+}
+
 func NewProperty(name, value string) *Property {
 	return &Property{Name: PropertyName(name), Value: value}
 }
