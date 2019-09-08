@@ -163,7 +163,7 @@ func hydrateLiteral(v reflect.Value, prop *properties.Property) (reflect.Value, 
 func hydrateProperty(v reflect.Value, prop *properties.Property) error {
 
 	initEmptyPointerValue(v)
-	
+
 	// check to see if the interface handles it's own hydration
 	if handled, err := hydrateInterface(v, prop); err != nil {
 		return utils.NewError(hydrateProperty, "unable to hydrate interface", v, err)
@@ -195,6 +195,11 @@ func hydrateProperty(v reflect.Value, prop *properties.Property) error {
 	// make sure we can set the new value into the provided pointer
 
 	if varr {
+		// check if array element type is a reference
+		if voldval.Type().Elem() == vnew.Type() {
+			vnewval = vnew
+		}
+
 		// for arrays, append the new value into the array structure
 		if !voldval.CanSet() {
 			return utils.NewError(hydrateProperty, "unable to set array value", v, nil)
